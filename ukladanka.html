@@ -1,0 +1,179 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
+	<meta name="Keywords" content="układanka, logika, Mariusz, Marzec" />
+	<meta name="Description" content="Gra logiczna autorstwa Mariusza Marca" />
+	<meta name="Author" content="Mariusz Marzec" />
+<title>Układanka by Mariusz Marzec</title>
+<script language="JavaScript">
+/**********************************************
+AUTOREM PONIŻSZEGO SKRYPTU JEST MARIUSZ MARZEC
+PROSZĘ NIE KOPIOWAĆ...
+E-MAIL: masi56@o2.pl
+**********************************************/
+var W = 3;
+var Plansza = new Array(W);
+var i;
+for (i = 0; i < W; i++) Plansza[i] = Array(W);
+function wypelnij()
+{
+	var liczba;
+	var i;
+	var j;
+	for (i = 0; i < W; i++)
+  {
+  		for (j = 0; j < W; j++)
+  		{
+			 			 	 		liczba = 1+Math.round((Math.random()*100))%(W*W);
+									while (jest(liczba)) liczba = 1+Math.round((Math.random()*100))%(W*W);
+									Plansza[i][j] = liczba;
+      }
+  }
+	rezultat();
+}
+function jest(x)
+{
+	var i;
+	var j;
+  for (i = 0; i < W; i++)
+  {
+  		for (j = 0; j < W; j++)
+  		{
+  					 	 		if (Plansza[i][j] == x) return true;
+      }
+  }
+	return false;
+}
+function rezultat()
+{
+  for (i = 0; i < W; i++)
+  {
+  		for (j = 0; j < W; j++)
+  		{
+  					 	 		if (Plansza[i][j] != 9)
+  								document.getElementById(i+","+j).innerHTML = Plansza[i][j];
+  								else
+  								document.getElementById(i+","+j).innerHTML = "...";
+      }
+  }
+}
+function ustawienie(x1, y1, x2, y2)
+{
+    if (((x1+1 == x2 || x1-1 == x2) && y1 == y2) || ((y1 - 1 == y2 ||  y1+1  == y2) && x1 == x2)) return true;
+	  return false;
+}
+function koniec()
+{
+ 	var koniec = true;
+  var k = 1;
+	for (i = 0; i < W; i++)
+  {
+  		for (j = 0; j < W; j++)
+  		{
+  					 	 		if (Plansza[i][j] != k) koniec = false;
+  								k++;
+      }
+			if (!koniec) break;
+  }
+	return koniec;
+}
+function zamien(x,y)
+{
+    temp = Plansza[x][y];
+		var i;
+		var j;
+		var odnaleziono = false;
+  	for (i = 0; i < W; i++)
+		{
+		   for (j = 0; j < W; j++)
+			 {
+			 		 if (Plansza[i][j] == 9)
+					 {
+    					 odnaleziono = true;
+    					 break;
+					 }
+			 }
+			 if (odnaleziono) break;
+		}
+		if (ustawienie(x,y,i,j))
+		{
+    		Plansza[x][y] = 9;
+    		Plansza[i][j] = temp;
+		}
+		rezultat();
+		if (koniec()) alert("Udało Ci się, brawo!! ;D");
+}
+function reset()
+{
+	var i;
+	var j;
+	for (i = 0; i < W; i++)
+  {
+  		for (j = 0; j < W; j++)
+  		{
+									Plansza[i][j] = 0;
+      }
+  }		 
+ 	wypelnij();
+}
+function otworz()
+{
+    document.getElementById("mini").style.display = "block";
+}
+function zamknij()
+{
+    document.getElementById("mini").style.display = "none";
+}
+</script>
+<style type="text/css">
+body {font-family:  Comic Sans MS;}
+a {color: red;}
+#plansza {width: 360px; height: 360px; margin: auto}
+#plansza td {width: 60px;}
+#plansza a {text-decoration: none; font-size: 40; color: black; text-align: center;}
+#mini {display: none; position: absolute; top: 30px; left: 270px; background-color: white;}
+#mini table {width: 100px; height: 100px;}
+</style>
+</head>
+<body onload="wypelnij()">
+<p>Celem gry jest ułożenie liczb w poniższy <a onmouseout="javascript:void(zamknij())" onmouseover="javascript:void(otworz())" onmouseout="javascript:void(zamknij())">sposób</a>... Miłej zabawy ;P</p>
+<div id="mini" onmouseout="javascript:void(zamknij())" onmouseover="javascript:void(otworz())">
+<table>
+<tr>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+</tr>
+<tr>
+<td>7</td>
+<td>8</td>
+<td>...</td>
+</tr>
+</table>
+</div>
+<table id="plansza">
+<tr>
+<td><a href="javascript:zamien(0,0)" id="0,0"></a></td>
+<td><a href="javascript:zamien(0,1)" id="0,1"></a></td>
+<td><a href="javascript:zamien(0,2)" id="0,2"></a></td>
+</tr>
+<tr>
+<td><a href="javascript:zamien(1,0)" id="1,0"></a></td>
+<td><a href="javascript:zamien(1,1)" id="1,1"></a></td>
+<td><a href="javascript:zamien(1,2)" id="1,2"></a></td>
+</tr>
+<tr>
+<td><a href="javascript:zamien(2,0)" id="2,0"></a></td>
+<td><a href="javascript:zamien(2,1)" id="2,1"></a></td>
+<td><a href="javascript:zamien(2,2)" id="2,2"></a></td>
+</tr>
+</table>
+<br />
+<a href="javascript:reset()">RESET</a>
+</body>
+</html>
